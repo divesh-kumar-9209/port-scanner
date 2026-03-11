@@ -1,5 +1,6 @@
 import socket
 import time
+import threading
 
 target = input("Enter target IP address: ")
 start_port = int(input("Enter start port: "))
@@ -14,18 +15,29 @@ start_time = time.time()
 
 open_ports = []
 
-for port in range(start_port, end_port + 1):
-
+def scan_port(port):
     scanner = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     scanner.settimeout(1)
 
     result = scanner.connect_ex((target, port))
 
     if result == 0:
-        open_ports.append(port)
         print("[OPEN] Port", port)
+        open_ports.append(port)
 
     scanner.close()
+
+
+threads = []
+
+for port in range(start_port, end_port + 1):
+
+    thread = threading.Thread(target=scan_port, args=(port,))
+    threads.append(thread)
+    thread.start()
+
+for thread in threads:
+    thread.join()
 
 end_time = time.time()
 
