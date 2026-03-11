@@ -11,7 +11,7 @@ try:
 except socket.gaierror:
     print("Invalid hostname.")
     exit()
-    
+
 print("\n---------------------------------")
 print("Target:", target)
 print("Scanning ports", start_port, "to", end_port)
@@ -25,19 +25,27 @@ def scan_port(port):
     scanner = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     scanner.settimeout(1)
 
-    result = scanner.connect_ex((target, port))
+    try:
+        result = scanner.connect_ex((target, port))
 
-    if result == 0:
-        print("[OPEN] Port", port)
-        open_ports.append(port)
+        if result == 0:
+            banner = ""
 
-    scanner.close()
+            try:
+                scanner.send(b"Hello\r\n")
+                banner = scanner.recv(1024).decode(errors="ignore").split("\n")[0]
+            except:
+                banner = "Service detected"
 
+            print(f"[OPEN] Port {port} → {banner}")
+            open_ports.append(port)
+
+    finally:
+        scanner.close()
 
 threads = []
 
 for port in range(start_port, end_port + 1):
-
     thread = threading.Thread(target=scan_port, args=(port,))
     threads.append(thread)
     thread.start()
