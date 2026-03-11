@@ -1,21 +1,45 @@
-# Python Port Scanner
+# Python Multithreaded Port Scanner
 
-A simple TCP port scanner built using Python.
+A multithreaded TCP port scanner built using Python.  
+This tool scans a specified range of ports on a target host and identifies which ports are open.
 
 ## Features
-- Scan ports 1–1024
-- Detect open ports
-- Lightweight and beginner friendly
+
+- Scan custom port ranges
+- Detect open TCP ports
+- Multithreaded scanning for faster performance
+- Scan time measurement
+- Hostname support
+- Clean terminal output
 
 ## How It Works
-The tool attempts a TCP connection to each port on a target machine. If the connection succeeds, the port is considered open.
 
-## Usage
-Run the script:
+The scanner attempts to establish a TCP connection to each port within the given range.  
+If the connection succeeds, the port is marked as open.
+
+Multithreading allows multiple ports to be scanned simultaneously, significantly reducing scan time.
+
+## Example Usage
+
+Run the scanner:
 
 python port_scanner.py
 
-Enter the target IP address when prompted.
+Example:
+
+Enter target IP address: scanme.nmap.org  
+Enter start port: 20  
+Enter end port: 200
+
+Output:
+
+[OPEN] Port 22  
+[OPEN] Port 80  
+
+Scan completed.  
+Open ports: [22, 80]
 
 ## Disclaimer
-Use this tool only on systems you own or have permission to test.
+
+This project is for educational purposes only.  
+Only scan systems you own or have permission to test.

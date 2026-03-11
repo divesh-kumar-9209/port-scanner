@@ -6,6 +6,12 @@ target = input("Enter target IP address: ")
 start_port = int(input("Enter start port: "))
 end_port = int(input("Enter end port: "))
 
+try:
+    target = socket.gethostbyname(target)
+except socket.gaierror:
+    print("Invalid hostname.")
+    exit()
+    
 print("\n---------------------------------")
 print("Target:", target)
 print("Scanning ports", start_port, "to", end_port)
@@ -43,6 +49,6 @@ end_time = time.time()
 
 print("\n---------------------------------")
 print("Scan completed.")
-print("Open ports:", open_ports)
+print("Open ports:", sorted(open_ports))
 print("Total scan time:", round(end_time - start_time, 2), "seconds")
 print("---------------------------------")
